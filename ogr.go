@@ -1836,6 +1836,36 @@ type StyleTable struct {
     cval C.OGRStyleTableH
 }
 
+/* -------------------------------------------------------------------- */
+/*      ConfigOption                                                    */
+/* -------------------------------------------------------------------- */
+
+//
+func SetConfigOption(key, value string) {
+	cKey := C.CString(key)
+	defer C.free(unsafe.Pointer(cKey))
+
+	cValue := C.CString(value)
+	defer C.free(unsafe.Pointer(cValue))
+
+	C.CPLSetConfigOption(cKey, cValue)
+
+}
+
+func ConfigOption(key, value string) string {
+
+	cKey := C.CString(key)
+	defer C.free(unsafe.Pointer(cKey))
+
+	cValue := C.CString(value)
+	defer C.free(unsafe.Pointer(cValue))
+
+	ret := C.CPLGetConfigOption(cKey, cValue)
+
+	return C.GoString(ret)
+
+}
+
 // Unimplemented: CreateStyleManager
 
 // Unimplemented: Destroy
